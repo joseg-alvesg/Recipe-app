@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import validator from 'validator';
-import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '../../helpers/constants';
+import { MIN_PASSWORD_LENGTH } from '../../helpers/constants';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const validation = () => validator.isEmail(email) && password.length
-   >= MIN_PASSWORD_LENGTH && password.length <= MAX_PASSWORD_LENGTH;
+   > MIN_PASSWORD_LENGTH;
 
   return (
     <div>
