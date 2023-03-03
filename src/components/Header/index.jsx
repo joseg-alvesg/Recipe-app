@@ -21,16 +21,23 @@ function Header({ title = 'TÍTULO PROVISÓRIO', renderSearchBtn = true }) {
 
   return (
     <header>
-      <Button dataTestId="profile-top-btn" onClick={ toProfile }>
-        <img alt="profile-icon" src={ profileIcon } />
+      <Button onClick={ toProfile }>
+        <img
+          alt="profile-icon"
+          src={ profileIcon }
+          data-testid="profile-top-btn"
+        />
       </Button>
       <h1 data-testid="page-title">{title}</h1>
       {renderSearchBtn && (
         <Button
-          dataTestId="search-top-btn"
           onClick={ () => setRenderSearchBar(!renderSearchBar) }
         >
-          <img alt="search-icon" src={ searchIcon } />
+          <img
+            alt="search-icon"
+            src={ searchIcon }
+            data-testid="search-top-btn"
+          />
         </Button>
       )}
       {renderSearchBar && <SearchBar />}
