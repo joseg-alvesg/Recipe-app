@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import SearchContext from './SearchContext';
 
 function SearchProvider({ children }) {
-  const [buttonSearch, setbuttonSearch] = useState(false);
   const [recipes, setRecipes] = useState({
     recipeType: [],
   });
@@ -21,9 +20,7 @@ function SearchProvider({ children }) {
     setSearch,
     recipes,
     setRecipes,
-    buttonSearch,
-    setbuttonSearch,
-  }), [search, recipes, buttonSearch]);
+  }), [search, recipes]);
 
   return (
     <SearchContext.Provider value={ contextValue }>

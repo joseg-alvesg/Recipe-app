@@ -1,15 +1,13 @@
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import SearchContext from '../contexts/SearchContext';
-import { recipeApi } from '../helpers/recipesApi';
+import SearchContext from '../../contexts/SearchContext';
+import { recipeApi } from '../../helpers/recipesApi';
 
 export default function SearchBar() {
   const {
     search,
     setSearch,
     recipes,
-    buttonSearch,
-    setbuttonSearch,
     setRecipes,
   } = useContext(SearchContext);
 
@@ -27,14 +25,6 @@ export default function SearchBar() {
       ...search,
       [name]: value,
     });
-  };
-
-  const testButton = () => {
-    if (buttonSearch === false) {
-      setbuttonSearch(true);
-    } else {
-      setbuttonSearch(false);
-    }
   };
 
   const recipeList = async () => {
@@ -66,69 +56,59 @@ export default function SearchBar() {
   const { recipeType } = recipes;
   return (
     <div>
+
+      <div>
+
+        <input
+          type="text"
+          name="searchValue"
+          data-testid="search-input"
+          value={ search.searchValue }
+          onChange={ handleClick }
+        />
+
+      </div>
+      <label htmlFor="ingredient-radio">
+        <input
+          name="radioValue"
+          type="radio"
+          id="ingredient-radio"
+          data-testid="ingredient-search-radio"
+          value="i"
+          onClick={ handleClick }
+        />
+        Ingredient
+      </label>
+      <label htmlFor="name-radio">
+        <input
+          name="radioValue"
+          type="radio"
+          id="name-radio"
+          data-testid="name-search-radio"
+          value="s"
+          onClick={ handleClick }
+        />
+        Name
+      </label>
+      <label htmlFor="first-letter-radio">
+        <input
+          name="radioValue"
+          type="radio"
+          id="first-letter-radio"
+          data-testid="first-letter-search-radio"
+          value="f"
+          onClick={ handleClick }
+        />
+        First letter
+      </label>
       <button
-        data-testid="search-top-btn"
-        onClick={ testButton }
+        type="button"
+        data-testid="exec-search-btn"
+        onClick={ () => recipeList() }
       >
-        Search
+        buscar
       </button>
-      { buttonSearch
-        ? (
-          <>
-            <div>
 
-              <input
-                type="text"
-                name="searchValue"
-                data-testid="search-input"
-                value={ search.searchValue }
-                onChange={ handleClick }
-              />
-
-            </div>
-            <label htmlFor="ingredient-radio">
-              <input
-                name="radioValue"
-                type="radio"
-                id="ingredient-radio"
-                data-testid="ingredient-search-radio"
-                value="i"
-                onClick={ handleClick }
-              />
-              Ingredient
-            </label>
-            <label htmlFor="name-radio">
-              <input
-                name="radioValue"
-                type="radio"
-                id="name-radio"
-                data-testid="name-search-radio"
-                value="s"
-                onClick={ handleClick }
-              />
-              Name
-            </label>
-            <label htmlFor="first-letter-radio">
-              <input
-                name="radioValue"
-                type="radio"
-                id="first-letter-radio"
-                data-testid="first-letter-search-radio"
-                value="f"
-                onClick={ handleClick }
-              />
-              First letter
-            </label>
-            <button
-              type="button"
-              data-testid="exec-search-btn"
-              onClick={ () => recipeList() }
-            >
-              buscar
-            </button>
-
-          </>
-        ) : null}
       <div>
         {recipeType !== 0 ? recipeType.map((recipe, index) => {
           if (index < '12') {

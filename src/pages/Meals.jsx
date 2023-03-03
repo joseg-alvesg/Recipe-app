@@ -1,10 +1,10 @@
 import React from 'react';
-import Teste from '../components/Teste';
+import Header from '../components/Header';
 
 export default function Meals() {
   return (
     <main>
-      <Teste />
+      <Header />
     </main>
   );
 }
