@@ -1,17 +1,25 @@
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import SearchContext from '../contexts/SearchContext';
-import { mealsApi, drinksApi } from '../helpers/recipesApi';
+import { recipeApi } from '../helpers/recipesApi';
 
 export default function SearchBar() {
   const {
     search,
     setSearch,
     recipes,
+    buttonSearch,
+    setbuttonSearch,
     setRecipes,
   } = useContext(SearchContext);
 
   const history = useHistory();
+
+  const test = history.location.pathname
+    .replace('/', '')
+    .replace('s', '')
+    .replace('m', 'M')
+    .replace('d', 'D');
 
   const handleClick = ({ target }) => {
     const { value, name } = target;
@@ -21,106 +29,108 @@ export default function SearchBar() {
     });
   };
 
-  const mealList = async () => {
+  const testButton = () => {
+    if (buttonSearch === false) {
+      setbuttonSearch(true);
+    } else {
+      setbuttonSearch(false);
+    }
+  };
+
+  const recipeList = async () => {
     const { radioValue, searchValue } = search;
+    const type = history.location.pathname.replace('/', '');
+
     if (radioValue === 'f' && searchValue.length > 1) {
       global.alert('Your search must have only 1 (one) character');
     } else {
-      const mealsList = await mealsApi(radioValue, searchValue);
-      if (mealsList.meals === null) {
+      const list = await recipeApi(radioValue, searchValue, type);
+      console.log(list);
+      if (list[type] === null) {
         return global.alert('Sorry, we haven\'t found any recipes for these filters.');
       }
-      if (mealsList.meals.length === 1) {
+      if (list[type].length === 1) {
+        console.log(list[type][0]);
         history.push({
-          pathname: `/meals/${mealsList.meals[0].idMeal}`,
+          pathname: `/${type}/${list[type][0][`id${test}`]}`,
         });
       } else {
         setRecipes({
           ...recipes,
-          meals: mealsList.meals,
-          drinks: [],
+          recipeType: list[type],
         });
       }
     }
   };
 
-  const drinkList = async () => {
-    const { radioValue, searchValue } = search;
-    if (radioValue === 'f' && searchValue.length > 1) {
-      global.alert('Your search must have only 1 (one) character');
-    } else {
-      const drinksList = await drinksApi(radioValue, searchValue);
-      if (drinksList.drinks === null) {
-        return global.alert('Sorry, we haven\'t found any recipes for these filters.');
-      }
-      if (drinksList.drinks.length === 1) {
-        history.push({
-          pathname: `/drinks/${drinksList.drinks[0].idDrink}`,
-        });
-      } else {
-        setRecipes({
-          ...recipes,
-          drinks: drinksList.drinks,
-          meals: [],
-        });
-      }
-    }
-  };
-
-  const recipeList = (param) => {
-    if (param === '/meals') {
-      mealList();
-    }
-    if (param === '/drinks') {
-      drinkList();
-    }
-  };
-
-  const { meals, drinks } = recipes;
+  const { recipeType } = recipes;
   return (
     <div>
-      <label htmlFor="ingredient-radio">
-        <input
-          name="radioValue"
-          type="radio"
-          id="ingredient-radio"
-          data-testid="ingredient-search-radio"
-          value="i"
-          onClick={ handleClick }
-        />
-        Ingredient
-      </label>
-      <label htmlFor="name-radio">
-        <input
-          name="radioValue"
-          type="radio"
-          id="name-radio"
-          data-testid="name-search-radio"
-          value="s"
-          onClick={ handleClick }
-        />
-        Name
-      </label>
-      <label htmlFor="first-letter-radio">
-        <input
-          name="radioValue"
-          type="radio"
-          id="first-letter-radio"
-          data-testid="first-letter-search-radio"
-          value="f"
-          onClick={ handleClick }
-        />
-        First letter
-      </label>
       <button
-        type="button"
-        data-testid="exec-search-btn"
-        onClick={ () => recipeList(history.location.pathname) }
+        data-testid="search-top-btn"
+        onClick={ testButton }
       >
-        buscar
+        Search
       </button>
+      { buttonSearch
+        ? (
+          <>
+            <div>
+
+              <input
+                type="text"
+                name="searchValue"
+                data-testid="search-input"
+                value={ search.searchValue }
+                onChange={ handleClick }
+              />
+
+            </div>
+            <label htmlFor="ingredient-radio">
+              <input
+                name="radioValue"
+                type="radio"
+                id="ingredient-radio"
+                data-testid="ingredient-search-radio"
+                value="i"
+                onClick={ handleClick }
+              />
+              Ingredient
+            </label>
+            <label htmlFor="name-radio">
+              <input
+                name="radioValue"
+                type="radio"
+                id="name-radio"
+                data-testid="name-search-radio"
+                value="s"
+                onClick={ handleClick }
+              />
+              Name
+            </label>
+            <label htmlFor="first-letter-radio">
+              <input
+                name="radioValue"
+                type="radio"
+                id="first-letter-radio"
+                data-testid="first-letter-search-radio"
+                value="f"
+                onClick={ handleClick }
+              />
+              First letter
+            </label>
+            <button
+              type="button"
+              data-testid="exec-search-btn"
+              onClick={ () => recipeList() }
+            >
+              buscar
+            </button>
+
+          </>
+        ) : null}
       <div>
-        {meals !== 0 ? meals.map((meal, index) => {
+        {recipeType !== 0 ? recipeType.map((recipe, index) => {
           if (index < '12') {
             return (
               <div
@@ -129,29 +139,12 @@ export default function SearchBar() {
 
               >
                 <img
-                  src={ meal.strMealThumb }
-                  alt={ meal.strMeal }
+                  src={ recipe[`str${test}Thumb`] }
+                  alt={ recipe[`str${test}`] }
                   data-testid={ `${index}-card-img` }
                 />
-                <p data-testid={ `${index}-card-name` }>{ meal.strMeal }</p>
-
-              </div>
-            );
-          } return null;
-        }) : null}
-        {drinks !== 0 ? drinks.map((drink, index) => {
-          if (index < '12') {
-            return (
-              <div
-                key={ index }
-                data-testid={ `${index}-recipe-card` }
-              >
-                <img
-                  src={ drink.strDrinkThumb }
-                  alt={ drink.strDrink }
-                  data-testid={ `${index}-card-img` }
-                />
-                <p data-testid={ `${index}-card-name` }>{ drink.strDrink }</p>
+                {console.log(recipe)}
+                <p data-testid={ `${index}-card-name` }>{ recipe[`str${test}`] }</p>
 
               </div>
             );

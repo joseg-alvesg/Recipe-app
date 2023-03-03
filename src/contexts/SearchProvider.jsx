@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import SearchContext from './SearchContext';
 
 function SearchProvider({ children }) {
-  const [test, setTest] = useState(false);
+  const [buttonSearch, setbuttonSearch] = useState(false);
   const [recipes, setRecipes] = useState({
-    meals: [],
-    drinks: [],
+    recipeType: [],
   });
   const [search, setSearch] = useState({
     radioValue: '',
@@ -22,9 +21,9 @@ function SearchProvider({ children }) {
     setSearch,
     recipes,
     setRecipes,
-    test,
-    setTest,
-  }), [search, recipes, test]);
+    buttonSearch,
+    setbuttonSearch,
+  }), [search, recipes, buttonSearch]);
 
   return (
     <SearchContext.Provider value={ contextValue }>

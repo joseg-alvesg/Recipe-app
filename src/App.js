@@ -1,17 +1,19 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import './App.css';
+import SearchProvider from './contexts/SearchProvider';
 import Drinks from './pages/Drinks';
 import Meals from './pages/Meals';
 
 function App() {
   return (
-    <BrowserRouter>
+    <SearchProvider>
       <Switch>
         <Route exact path="/meals" component={ Meals } />
         <Route exact path="/drinks" component={ Drinks } />
       </Switch>
-    </BrowserRouter>
+    </SearchProvider>
+
   );
 }
 
