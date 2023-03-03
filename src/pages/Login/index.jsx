@@ -20,7 +20,7 @@ export default function Login() {
   return (
     <div>
       <section>
-        login image
+        login icon
       </section>
       <section>
         <input
