@@ -5,6 +5,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  width: 360px;
+  height: 640px;
 }
 
 code {
@@ -12,3 +14,7 @@ code {
     monospace;
 }
 
+* image, * img {
+  width: 50px;
+  height: 80px;
+}

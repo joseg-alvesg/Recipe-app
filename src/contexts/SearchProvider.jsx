@@ -5,6 +5,7 @@ import SearchContext from './SearchContext';
 function SearchProvider({ children }) {
   const [recipes, setRecipes] = useState({
     recipeType: [],
+    filtered: '',
   });
   const [search, setSearch] = useState({
     radioValue: '',

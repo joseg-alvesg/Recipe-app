@@ -52,7 +52,6 @@ export default function SearchBar() {
     }
   };
 
-  const { recipeType } = recipes;
   return (
     <div>
 
@@ -108,8 +107,8 @@ export default function SearchBar() {
         buscar
       </button>
 
-      <div>
-        {recipeType?.map((recipe, index) => {
+      {/* <div>
+        {recipeType !== 0 ? recipeType.map((recipe, index) => {
           if (index < '12') {
             return (
               <div
@@ -127,8 +126,8 @@ export default function SearchBar() {
               </div>
             );
           } return null;
-        })}
-      </div>
+        }) : null}
+      </div> */}
     </div>
   );
 }
