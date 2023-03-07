@@ -1,10 +1,11 @@
 import React from 'react';
-import Meals from '../Meals';
+import Footer from '../../components/Footer/Index';
 
 export default function Recipes() {
   return (
-    <div>
-      <Meals />
-    </div>
+    <>
+      <div>Recipes</div>
+      <Footer />
+    </>
   );
 }
