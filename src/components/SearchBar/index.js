@@ -35,7 +35,6 @@ export default function SearchBar() {
       global.alert('Your search must have only 1 (one) character');
     } else {
       const list = await recipeApi(radioValue, searchValue, type);
-      console.log(list);
       if (list[type] === null) {
         return global.alert('Sorry, we haven\'t found any recipes for these filters.');
       }
@@ -110,7 +109,7 @@ export default function SearchBar() {
       </button>
 
       <div>
-        {recipeType !== 0 ? recipeType.map((recipe, index) => {
+        {recipeType?.map((recipe, index) => {
           if (index < '12') {
             return (
               <div
@@ -123,13 +122,12 @@ export default function SearchBar() {
                   alt={ recipe[`str${test}`] }
                   data-testid={ `${index}-card-img` }
                 />
-                {console.log(recipe)}
                 <p data-testid={ `${index}-card-name` }>{ recipe[`str${test}`] }</p>
 
               </div>
             );
           } return null;
-        }) : null}
+        })}
       </div>
     </div>
   );
