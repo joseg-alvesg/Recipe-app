@@ -1,3 +1,32 @@
-export const MIN_PASSWORD_LENGTH = 6;
 export const MAX_INGREDIENTS = 20;
 export const MAX_RECOMMENDED_RECIPES = 6;
+export const MIN_PASSWORD_LENGTH = 6;
+export const USER = 'user';
+export const VALID_EMAIL = 'valid@email.com';
+export const VALID_PASSWORD = 'validpassword';
+
+export const ROLE_BTN_DONE_RECIPES = ['button', { name: /done recipes/i }];
+export const ROLE_BTN_FAVORITE_RECIPES = ['button', { name: /favorite recipes/i }];
+export const ROLE_BTN_LOGIN = ['button', { name: /login/i }];
+export const ROLE_BTN_LOGOUT = ['button', { name: /logout/i }];
+export const ROLE_HEADING_PROFILE = ['heading', { name: /profile/i }];
+export const ROLE_ICON_PROFILE = ['img', { name: /profile-icon/i }];
+export const TEST_ID_BTN_LOGIN = 'login-submit-btn';
+export const TEST_ID_BTN_PROFILE_DONE_RECIPES = 'profile-done-btn';
+export const TEST_ID_BTN_PROFILE_FAVORITE_RECIPES = 'profile-favorite-btn';
+export const TEST_ID_BTN_PROFILE_LOGOUT = 'profile-logout-btn';
+export const TEST_ID_BTN_PROFILE_TOP = 'profile-top-btn';
+export const TEST_ID_INPUT_EMAIL = 'email-input';
+export const TEST_ID_INPUT_PASSWORD = 'password-input';
+export const TEST_ID_PROFILE_EMAIL = 'profile-email';
+
+export const ROUTE_DONE_RECIPES = '/done-recipes';
+export const ROUTE_DRINKS = '/drinks';
+export const ROUTE_DRINK_DETAILS = '/drinks/:id';
+export const ROUTE_DRINK_IN_PROGRESS = '/drinks/:id/in-progress';
+export const ROUTE_FAVORITE_RECIPES = '/favorite-recipes';
+export const ROUTE_LOGIN = '/';
+export const ROUTE_MEALS = '/meals';
+export const ROUTE_MEAL_DETAILS = '/meals/:id';
+export const ROUTE_MEAL_IN_PROGRESS = '/meals/:id/in-progress';
+export const ROUTE_PROFILE = '/profile';

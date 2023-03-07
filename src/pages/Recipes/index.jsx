@@ -11,7 +11,7 @@ import {
 } from '../../helpers/services';
 import RecipeCards from '../../components/RecipeCard/RecipeCards';
 import Button from '../../components/Button';
-import Footer from '../../components/Footer/Index';
+import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 
 const MAX_RECIPES = 12;
