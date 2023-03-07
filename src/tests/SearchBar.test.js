@@ -42,7 +42,7 @@ describe('Testa o componente SearchBar', () => {
     const email = screen.getByTestId('email-input');
     const password = screen.getByTestId('password-input');
     const button = screen.getByTestId(LOGIN_SUBMIT_BTN);
-    const alertMock = jest.spyOn(window, 'alert').mockImplementation();
+    const alertMock = jest.spyOn(global, 'alert').mockImplementation();
 
     userEvent.type(email, EMAIL_INPUT);
     userEvent.type(password, '1234567');

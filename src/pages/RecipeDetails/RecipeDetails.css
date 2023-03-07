@@ -1,0 +1,14 @@
+.recommended-box {
+  display: flex;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+.recommended-card {
+  margin-left: 15px;
+  text-align: center;
+}
+
+.carousel-img {
+  width: 200px;
+}
