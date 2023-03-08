@@ -1,7 +1,5 @@
-import { renderHook, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
-import { MemoryRouter } from 'react-router-dom';
 import App from '../App';
 import renderWithRouter from './renderWithRouter';
 import meals from '../../cypress/mocks/meals';
@@ -12,13 +10,8 @@ import beefMeals from '../../cypress/mocks/beefMeals';
 import ordnaryDrinks from '../../cypress/mocks/ordinaryDrinks';
 import { Recipes } from '../pages';
 import SearchProvider from '../contexts/SearchProvider';
-// import SearchProvider from '../contexts/SearchProvider';
 
-const TEST_EMAIL = 'test@test.com';
-const TEST_PASSWORD = '1234567';
-const EMAIL_INPUT = 'email-input';
-const PASSWORD_INPUT = 'password-input';
-const LOGIN_BUTTON = 'login-submit-btn';
+const ALL_CATEGORY_FILTER = 'All-category-filter';
 
 describe('Testa a página de receitas', () => {
   beforeEach(() => {
@@ -62,7 +55,7 @@ describe('Testa a página de receitas', () => {
       expect(cardRecipe0).toHaveTextContent('Beef and Mustard Pie');
     });
 
-    const allBtn = screen.getByTestId('All-category-filter');
+    const allBtn = screen.getByTestId(ALL_CATEGORY_FILTER);
     userEvent.click(allBtn);
 
     await waitFor(() => {
@@ -102,7 +95,7 @@ describe('Testa a página de receitas', () => {
       expect(cardRecipe0).toHaveTextContent('3-Mile Long Island Iced Tea');
     });
 
-    const allBtn = screen.getByTestId('All-category-filter');
+    const allBtn = screen.getByTestId(ALL_CATEGORY_FILTER);
     userEvent.click(allBtn);
 
     await waitFor(() => {
@@ -137,7 +130,7 @@ describe('Testa a página de receitas', () => {
       expect(global.fetch).not.toBeCalled();
     });
 
-    const allBtn = screen.queryByTestId('All-category-filter');
+    const allBtn = screen.queryByTestId(ALL_CATEGORY_FILTER);
     expect(allBtn).toBeInTheDocument();
 
     userEvent.click(allBtn);
