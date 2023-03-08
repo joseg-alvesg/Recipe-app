@@ -8,9 +8,13 @@ function Button({
   name = '',
   onClick = null,
   submitBtn = false,
+  id = '',
+  className = '',
 }) {
   return (
     <button
+      className={ className }
+      id={ id }
       data-testid={ dataTestId }
       disabled={ disabled }
       name={ name }
@@ -27,6 +31,8 @@ Button.propTypes = {
   dataTestId: PropTypes.string,
   disabled: PropTypes.bool,
   name: PropTypes.string,
+  className: PropTypes.string,
+  id: PropTypes.string,
   onClick: PropTypes.func,
   submitBtn: PropTypes.bool,
 };

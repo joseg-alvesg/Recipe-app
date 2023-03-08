@@ -88,7 +88,10 @@ export default function Recipes() {
 
   return (
     <div>
-      <Header title={ pathname.replace('/', '') } />
+      <Header
+        renderSearchBtn
+        title={ pathname.replace('/', '') }
+      />
       <button
         type="button"
         onClick={ handleClick }

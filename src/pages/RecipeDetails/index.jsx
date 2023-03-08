@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import Button from '../../components/Button';
+import Carousel from '../../components/Carousel';
 import SearchContext from '../../contexts/SearchContext';
-import { MAX_INGREDIENTS, MAX_RECOMMENDED_RECIPES } from '../../helpers/constants';
+import { MAX_INGREDIENTS } from '../../helpers/constants';
 import { detailsApi } from '../../helpers/recipesApi';
 import './RecipeDetails.css';
 
@@ -11,7 +13,6 @@ export default function RecipeDetails() {
     ingredients: [],
   });
   const {
-    recipes,
     setRecipes,
   } = useContext(SearchContext);
 
@@ -27,22 +28,78 @@ export default function RecipeDetails() {
     }
   };
 
+  const startButton = () => {
+    const recipesInProgress = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    if (recipesInProgress !== undefined
+      && recipesInProgress !== null) {
+      if (type.includes('meals')) {
+        recipesInProgress.meals[id] = [];
+        localStorage.setItem('inProgressRecipes', JSON.stringify(recipesInProgress));
+        history.push(`/meals/${id}/in-progress`);
+      }
+      if (type.includes('drinks')) {
+        recipesInProgress.drinks[id] = [];
+        localStorage.setItem('inProgressRecipes', JSON.stringify(recipesInProgress));
+        history.push(`/drinks/${id}/in-progress`);
+      }
+    } else {
+      const recipesTest = {
+        meals: {},
+        drinks: {},
+      };
+      if (type.includes('meals')) {
+        recipesTest.meals[id] = [];
+        localStorage.setItem('inProgressRecipes', JSON.stringify(recipesTest));
+        history.push(`/meals/${id}/in-progress`);
+      }
+      if (type.includes('drinks')) {
+        recipesTest.drinks[id] = [];
+        localStorage.setItem('inProgressRecipes', JSON.stringify(recipesTest));
+        history.push(`/drinks/${id}/in-progress`);
+      }
+    }
+  };
+
+  const progressRecipes = () => {
+    const recipesList = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    if (recipesList !== undefined
+      && recipesList !== null) {
+      if (tag() === 'Meal') {
+        return Object.keys(recipesList.meals).some((recipe) => id === recipe);
+      }
+      if (tag() === 'Drink') {
+        return Object.keys(recipesList.drinks).some((recipe) => id === recipe);
+      }
+    }
+    return false;
+  };
+
+  const doneRecipes = () => {
+    const recipesList = JSON.parse(localStorage.getItem('doneRecipes'));
+    if (recipesList !== undefined
+      && recipesList !== null) {
+      return recipesList.some((recipe) => id === recipe.id);
+    }
+    return false;
+  };
+
   useEffect(() => {
     async function getDetails() {
       const recipeDetails = await detailsApi(id, type);
-      const test = [];
+      const ingredientList = [];
       await recipeDetails.map((item) => {
         for (let index = 1; index < MAX_INGREDIENTS; index += 1) {
           if (item[`strIngredient${index}`] !== ''
-           && item[`strIngredient${index}`] !== null) {
-            test.push({
+           && item[`strIngredient${index}`] !== null
+           && item[`strIngredient${index}`] !== undefined) {
+            ingredientList.push({
               ingredient: item[`strIngredient${index}`],
               measure: item[`strMeasure${index}`],
             });
           }
         } return setDetails({
           detail: recipeDetails,
-          ingredients: test,
+          ingredients: ingredientList,
         });
       });
     }
@@ -111,52 +168,17 @@ export default function RecipeDetails() {
                   src={ details.detail[0].strYoutube }
                 />
               ) : null}
-            <div className="recommended-box">
-              {tag() === 'Meal' ? recipes.recipeType.drinks?.map((item, index) => {
-                if (index < MAX_RECOMMENDED_RECIPES) {
-                  return (
-                    <div
-                      className="recommended-card"
-                      data-testid={ `${index}-recommendation-card` }
-                      key={ index }
-                    >
-                      <img
-                        className="carousel-img"
-                        src={ item.strDrinkThumb }
-                        alt={ item.strDrink }
-                        data-testid="recipe-photo"
-                      />
-                      <p data-testid={ `${index}-recommendation-title` }>
-                        { item.strDrink }
-                      </p>
-                    </div>
+            <Carousel tag={ tag() } />
 
-                  );
-                } return null;
-              }) : recipes.recipeType.meals?.map((item, index) => {
-                if (index < MAX_RECOMMENDED_RECIPES) {
-                  return (
-                    <div
-                      className="recommended-card"
-                      data-testid={ `${index}-recommendation-card` }
-                      key={ index }
-                    >
-                      <img
-                        className="carousel-img"
-                        src={ item.strMealThumb }
-                        alt={ item.strMeal }
-                        data-testid="recipe-photo"
-                      />
-                      <p data-testid={ `${index}-recommendation-title` }>
-                        { item.strMeal }
-                      </p>
-                    </div>
-
-                  );
-                } return null;
-              })}
-            </div>
-
+            { !doneRecipes() ? (
+              <Button
+                className="start-button"
+                dataTestId="start-recipe-btn"
+                onClick={ startButton }
+              >
+                {progressRecipes() ? 'Continue Recipe' : 'Start Recipe' }
+              </Button>)
+              : null}
           </>) : null}
 
     </div>

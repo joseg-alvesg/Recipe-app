@@ -77,6 +77,6 @@ describe('Testa o componente SearchBar', () => {
     expect(searchInput).toHaveValue('Arrabiata');
 
     userEvent.click(screen.getByTestId(BUTTON_ID));
-    expect(await screen.findByText(/RecipeDetails/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Ingredients/i, {}, { timeout: 3000 })).toBeInTheDocument();
   });
 });
