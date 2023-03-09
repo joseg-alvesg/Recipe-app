@@ -4,8 +4,6 @@ import SearchContext from '../../contexts/SearchContext';
 import { MAX_INGREDIENTS } from '../../helpers/constants';
 import { detailsApi } from '../../helpers/recipesApi';
 import './RecipeInProgress.css';
-import shareIcon from '../../images/shareIcon.svg';
-import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
 import ProgressCard from '../../components/ProgressCard';
 
 export default function RecipeInProgress() {
