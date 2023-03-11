@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import Button from '../../components/Button';
 import Carousel from '../../components/Carousel';
@@ -8,11 +8,13 @@ import { detailsApi } from '../../helpers/recipesApi';
 import './RecipeDetails.css';
 
 export default function RecipeDetails() {
-  const [details, setDetails] = useState({
-    detail: [],
-    ingredients: [],
-  });
+  // const [details, setDetails] = useState({
+  //   detail: [],
+  //   ingredients: [],
+  // });
   const {
+    details,
+    setDetails,
     setRecipes,
   } = useContext(SearchContext);
 
@@ -27,36 +29,39 @@ export default function RecipeDetails() {
       return 'Drink';
     }
   };
+  const recipeTypes = () => {
+    if (type.includes('meals')) {
+      return 'meals';
+    }
+    if (type.includes('drinks')) {
+      return 'drinks';
+    }
+  };
 
   const startButton = () => {
     const recipesInProgress = JSON.parse(localStorage.getItem('inProgressRecipes'));
     if (recipesInProgress !== undefined
       && recipesInProgress !== null) {
-      if (type.includes('meals')) {
-        recipesInProgress.meals[id] = [];
-        localStorage.setItem('inProgressRecipes', JSON.stringify(recipesInProgress));
-        history.push(`/meals/${id}/in-progress`);
+      if (recipesInProgress[`${recipeTypes()}`][id]) {
+        return history.push(`/${recipeTypes()}/${id}/in-progress`);
       }
-      if (type.includes('drinks')) {
-        recipesInProgress.drinks[id] = [];
-        localStorage.setItem('inProgressRecipes', JSON.stringify(recipesInProgress));
-        history.push(`/drinks/${id}/in-progress`);
-      }
-    } else {
-      const recipesTest = {
-        meals: {},
-        drinks: {},
-      };
-      if (type.includes('meals')) {
-        recipesTest.meals[id] = [];
-        localStorage.setItem('inProgressRecipes', JSON.stringify(recipesTest));
-        history.push(`/meals/${id}/in-progress`);
-      }
-      if (type.includes('drinks')) {
-        recipesTest.drinks[id] = [];
-        localStorage.setItem('inProgressRecipes', JSON.stringify(recipesTest));
-        history.push(`/drinks/${id}/in-progress`);
-      }
+      recipesInProgress[`${recipeTypes()}`][id] = [];
+      return localStorage
+        .setItem('inProgressRecipes', JSON.stringify(recipesInProgress));
+    }
+    const recipesTest = {
+      meals: {},
+      drinks: {},
+    };
+    if (type.includes('meals')) {
+      recipesTest.meals[id] = [];
+      localStorage.setItem('inProgressRecipes', JSON.stringify(recipesTest));
+      return history.push(`/meals/${id}/in-progress`);
+    }
+    if (type.includes('drinks')) {
+      recipesTest.drinks[id] = [];
+      localStorage.setItem('inProgressRecipes', JSON.stringify(recipesTest));
+      return history.push(`/drinks/${id}/in-progress`);
     }
   };
 
@@ -126,7 +131,7 @@ export default function RecipeDetails() {
     }
     getDetails();
     getRecipes();
-  }, [id, type, setRecipes]);
+  }, [id, type, setRecipes, setDetails]);
 
   return (
     <div>
@@ -165,7 +170,9 @@ export default function RecipeDetails() {
                 <iframe
                   data-testid="video"
                   title={ details.detail[0][`str${tag()}`] }
-                  src={ details.detail[0].strYoutube }
+                  src={ details.detail[0].strYoutube
+                    .replace('watch?v=', 'embed/')
+                    .replace('youtube', 'youtube-nocookie') }
                 />
               ) : null}
             <Carousel tag={ tag() } />
