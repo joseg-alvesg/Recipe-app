@@ -14,6 +14,7 @@ import {
   USER,
 } from '../../helpers/constants';
 import { getLocalStorage } from '../../helpers/localStorage';
+import style from './Profile.module.css';
 
 export default function Profile() {
   const history = useHistory();
@@ -30,21 +31,24 @@ export default function Profile() {
   return (
     <>
       <Header title="Profile" renderSearchBtn={ false } />
-      <section>
-        <p data-testid={ TEST_ID_PROFILE_EMAIL }>{email}</p>
+      <section className={ style.profile }>
+        <p className={ style.email } data-testid={ TEST_ID_PROFILE_EMAIL }>{email}</p>
         <Button
+          buttons={ style.doneRecipes }
           dataTestId={ TEST_ID_BTN_PROFILE_DONE_RECIPES }
           onClick={ () => goTo(ROUTE_DONE_RECIPES) }
         >
           Done Recipes
         </Button>
         <Button
+          buttons={ style.favoriteRecipes }
           dataTestId={ TEST_ID_BTN_PROFILE_FAVORITE_RECIPES }
           onClick={ () => goTo(ROUTE_FAVORITE_RECIPES) }
         >
           Favorite Recipes
         </Button>
         <Button
+          buttons={ style.logoutButton }
           dataTestId={ TEST_ID_BTN_PROFILE_LOGOUT }
           onClick={ () => logout() }
         >

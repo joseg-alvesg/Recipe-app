@@ -1,0 +1,37 @@
+@media only screen and ( min-width : 360px ) and ( max-device-width : 640px ) {
+
+
+  .borderTotal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-overflow: clip;
+  }
+
+  .recipes img {
+    background-color: yellow;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    width: 100%;
+  }
+
+  .h3Recipes {
+    color: white;
+    font-size: 16px;
+    margin-left: 5px;
+    text-align: center;
+    white-space: nowrap;
+
+  }
+
+  .link {
+    background-color: red;
+    border: solid 2px rgb(184, 182, 182);
+    border-radius: 10px;
+    font-size: 1.5rem;
+    max-width: 10ch;
+    overflow: hidden;
+    text-decoration: none;
+    text-overflow: ellipsis;
+  }
+}

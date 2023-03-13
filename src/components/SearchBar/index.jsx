@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import SearchContext from '../../contexts/SearchContext';
 import { recipeApi } from '../../helpers/recipesApi';
+import style from './SearchBar.module.css';
 
 export default function SearchBar() {
   const {
@@ -53,21 +54,18 @@ export default function SearchBar() {
   };
 
   return (
-    <div>
-
-      <div>
-
-        <input
-          type="text"
-          name="searchValue"
-          data-testid="search-input"
-          value={ search.searchValue }
-          onChange={ handleClick }
-        />
-
-      </div>
+    <div className={ style.pesquisar }>
+      <input
+        className={ style.search }
+        type="text"
+        name="searchValue"
+        data-testid="search-input"
+        value={ search.searchValue }
+        onChange={ handleClick }
+      />
       <label htmlFor="ingredient-radio">
         <input
+          className={ style.ratioButon }
           name="radioValue"
           type="radio"
           id="ingredient-radio"
@@ -79,6 +77,7 @@ export default function SearchBar() {
       </label>
       <label htmlFor="name-radio">
         <input
+          className={ style.ratioButon }
           name="radioValue"
           type="radio"
           id="name-radio"
@@ -90,6 +89,7 @@ export default function SearchBar() {
       </label>
       <label htmlFor="first-letter-radio">
         <input
+          className={ style.ratioButon }
           name="radioValue"
           type="radio"
           id="first-letter-radio"
@@ -100,6 +100,7 @@ export default function SearchBar() {
         First letter
       </label>
       <button
+        className={ style.buscarButton }
         type="button"
         data-testid="exec-search-btn"
         onClick={ () => recipeList() }

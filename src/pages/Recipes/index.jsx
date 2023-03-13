@@ -13,6 +13,7 @@ import RecipeCards from '../../components/RecipeCard/RecipeCards';
 import Button from '../../components/Button';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
+import style from './Recipes.module.css';
 
 const MAX_RECIPES = 12;
 const MAX_CATEGORIES = 5;
@@ -88,35 +89,42 @@ export default function Recipes() {
 
   return (
     <div>
-      <Header title={ pathname.replace('/', '') } />
-      <button
-        type="button"
-        onClick={ handleClick }
-        data-testid="All-category-filter"
-        name="All"
-      >
-        All
-      </button>
-      {categories?.slice(0, MAX_CATEGORIES)?.map((category, index) => (
-        <Button
-          dataTestId={ `${category.strCategory}-category-filter` }
-          key={ index + 1 }
-          name={ category.strCategory }
+      <div className={ style.header }>
+        <Header title={ pathname.replace('/', '') } />
+      </div>
+      <div className={ style.headerButtons }>
+        <button
+          className={ style.button }
+          type="button"
           onClick={ handleClick }
-          category={ category }
+          data-testid="All-category-filter"
+          name="All"
         >
-          {category.strCategory}
-        </Button>
-      ))}
-
-      {displayRecipes.map((recipe, index) => (
-        <RecipeCards
-          key={ recipe.strDrink || recipe.strMeal }
-          recipe={ recipe }
-          index={ index }
-          linkToDetails={ `${pathname}/${recipe.idMeal || recipe.idDrink}` }
-        />
-      ))}
+          All
+        </button>
+        {categories?.slice(0, MAX_CATEGORIES)?.map((category, index) => (
+          <Button
+            buttons={ style.button }
+            dataTestId={ `${category.strCategory}-category-filter` }
+            key={ index + 1 }
+            name={ category.strCategory }
+            onClick={ handleClick }
+            category={ category }
+          >
+            {category.strCategory}
+          </Button>
+        ))}
+      </div>
+      <section className={ style.showCard }>
+        {displayRecipes.map((recipe, index) => (
+          <RecipeCards
+            key={ recipe.strDrink || recipe.strMeal }
+            recipe={ recipe }
+            index={ index }
+            linkToDetails={ `${pathname}/${recipe.idMeal || recipe.idDrink}` }
+          />
+        ))}
+      </section>
       <Footer />
     </div>
   );

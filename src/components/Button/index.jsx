@@ -8,9 +8,11 @@ function Button({
   name = '',
   onClick = null,
   submitBtn = false,
+  buttons = '',
 }) {
   return (
     <button
+      className={ buttons }
       data-testid={ dataTestId }
       disabled={ disabled }
       name={ name }
@@ -25,6 +27,7 @@ function Button({
 Button.propTypes = {
   children: PropTypes.node.isRequired,
   dataTestId: PropTypes.string,
+  buttons: PropTypes.string,
   disabled: PropTypes.bool,
   name: PropTypes.string,
   onClick: PropTypes.func,

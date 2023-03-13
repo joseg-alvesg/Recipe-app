@@ -1,0 +1,27 @@
+@media only screen and ( min-width : 360px ) and ( max-device-width : 640px ) {
+
+  .pesquisar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: space-around;
+  }
+
+  .search {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: space-around;
+    margin: 10px auto;
+    width: 95%;
+  }
+
+
+  .buscarButton {
+    background-color: black;
+    color: white;
+    font-size: 20px;
+  }
+
+}

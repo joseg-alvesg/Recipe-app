@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from '../Button';
-
+import style from './Header.module.css';
 import profileIcon from '../../images/profileIcon.svg';
 import searchIcon from '../../images/searchIcon.svg';
 import SearchBar from '../SearchBar';
@@ -21,26 +21,29 @@ function Header({ title = 'TÍTULO PROVISÓRIO', renderSearchBtn = true }) {
 
   return (
     <header>
-      <Button onClick={ toProfile }>
-        <img
-          alt="profile-icon"
-          src={ profileIcon }
-          data-testid="profile-top-btn"
-        />
-      </Button>
-      <h1 data-testid="page-title">{title}</h1>
-      {renderSearchBtn && (
-        <Button
-          onClick={ () => setRenderSearchBar(!renderSearchBar) }
-        >
+      <div className={ style.header }>
+        <Button buttons={ style.buttonsHeader } onClick={ toProfile }>
           <img
-            alt="search-icon"
-            src={ searchIcon }
-            data-testid="search-top-btn"
+            alt="profile-icon"
+            src={ profileIcon }
+            data-testid="profile-top-btn"
           />
         </Button>
-      )}
-      {renderSearchBar && <SearchBar />}
+        <h1 data-testid="page-title">{title}</h1>
+        {renderSearchBtn && (
+          <Button
+            buttons={ style.buttonsHeader }
+            onClick={ () => setRenderSearchBar(!renderSearchBar) }
+          >
+            <img
+              alt="search-icon"
+              src={ searchIcon }
+              data-testid="search-top-btn"
+            />
+          </Button>
+        )}
+        {renderSearchBar && <SearchBar />}
+      </div>
     </header>
   );
 }
