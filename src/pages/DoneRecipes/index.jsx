@@ -5,35 +5,25 @@ import Header from '../../components/Header';
 export default function DoneRecipes() {
   const [type, setType] = useState('all');
 
-  const mealsButton = () => {
-    setType('meal');
-  };
-
-  const drinksButton = () => {
-    setType('drink');
-  };
-
-  const allButton = () => {
-    setType('all');
-  };
+  const filterButton = (filter) => setType(filter);
 
   return (
     <div>
       <Header title="Done Recipes" renderSearchBtn={ false } />
       <button
-        onClick={ allButton }
+        onClick={ () => filterButton('all') }
         data-testid="filter-by-all-btn"
       >
         all
       </button>
       <button
-        onClick={ mealsButton }
+        onClick={ () => filterButton('meal') }
         data-testid="filter-by-meal-btn"
       >
         meals
       </button>
       <button
-        onClick={ drinksButton }
+        onClick={ () => filterButton('drink') }
         data-testid="filter-by-drink-btn"
       >
         drinks

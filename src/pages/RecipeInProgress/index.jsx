@@ -5,6 +5,7 @@ import { MAX_INGREDIENTS } from '../../helpers/constants';
 import { detailsApi } from '../../helpers/recipesApi';
 import './RecipeInProgress.css';
 import ProgressCard from '../../components/ProgressCard';
+import { recipeTypes, tag } from '../../helpers/Functions';
 
 export default function RecipeInProgress() {
   const [ingredients, setIngredients] = useState([]);
@@ -18,35 +19,17 @@ export default function RecipeInProgress() {
   const history = useHistory();
   const type = history.location.pathname;
 
-  const tag = () => {
-    if (type.includes('meals')) {
-      return 'Meal';
-    }
-    if (type.includes('drinks')) {
-      return 'Drink';
-    }
-  };
-
-  const recipeTypes = () => {
-    if (type.includes('meals')) {
-      return 'meals';
-    }
-    if (type.includes('drinks')) {
-      return 'drinks';
-    }
-  };
-
   const finishButton = () => {
     const { detail } = details;
     const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
     const completedRecipe = {
       id,
-      type: recipeTypes().replace('s', ''),
+      type: recipeTypes(type).replace('s', ''),
       nationality: detail[0].strArea === undefined ? '' : detail[0].strArea,
       category: detail[0].strCategory,
-      alcoholicOrNot: recipeTypes() === 'drinks' ? detail[0].strAlcoholic : '',
-      name: detail[0][`str${tag()}`],
-      image: detail[0][`str${tag()}Thumb`],
+      alcoholicOrNot: recipeTypes(type) === 'drinks' ? detail[0].strAlcoholic : '',
+      name: detail[0][`str${tag(type)}`],
+      image: detail[0][`str${tag(type)}Thumb`],
       doneDate: new Date(),
       tags: detail[0].strTags !== null ? detail[0].strTags.split(',') : [],
     };
@@ -62,7 +45,7 @@ export default function RecipeInProgress() {
 
   const attIngredients = () => {
     const recipesInProgress = JSON.parse(localStorage.getItem('inProgressRecipes'));
-    const newIngredients = recipesInProgress[`${recipeTypes()}`][id];
+    const newIngredients = recipesInProgress[`${recipeTypes(type)}`][id];
     setIngredients(newIngredients);
   };
 
@@ -75,18 +58,18 @@ export default function RecipeInProgress() {
         meals: {},
         drinks: {},
       };
-      recipesTest[`${recipeTypes()}`][id] = [];
+      recipesTest[`${recipeTypes(type)}`][id] = [];
       recipesInProgress = recipesTest;
     }
     if (target.checked) {
-      recipesInProgress[`${recipeTypes()}`][id].push(target.id);
+      recipesInProgress[`${recipeTypes(type)}`][id].push(target.id);
       localStorage.setItem('inProgressRecipes', JSON.stringify(recipesInProgress));
       attIngredients();
       return task.classList.toggle('done');
     }
-    const newProgressRecipes = recipesInProgress[`${recipeTypes()}`][id]
+    const newProgressRecipes = recipesInProgress[`${recipeTypes(type)}`][id]
       .filter((item) => item !== target.id);
-    recipesInProgress[`${recipeTypes()}`][id] = newProgressRecipes;
+    recipesInProgress[`${recipeTypes(type)}`][id] = newProgressRecipes;
     console.log(recipesInProgress);
     localStorage.setItem('inProgressRecipes', JSON.stringify(recipesInProgress));
     attIngredients();
@@ -97,10 +80,10 @@ export default function RecipeInProgress() {
     const currentTask = () => {
       const recipesInProgress = JSON.parse(localStorage.getItem('inProgressRecipes'));
       if (type.includes('meals')) {
-        const mealsIngredients = recipesInProgress.meals[id];
+        const mealsIngredients = recipesInProgress?.meals[id];
         setIngredients(mealsIngredients);
       } else {
-        const drinksIngredients = recipesInProgress.drinks[id];
+        const drinksIngredients = recipesInProgress?.drinks[id];
         setIngredients(drinksIngredients);
       }
     };
@@ -138,18 +121,16 @@ export default function RecipeInProgress() {
         const response = await fetch(mealsURL);
         const json = await response.json();
         console.log(json);
-        setRecipes({
+        return setRecipes({
           recipeType: json,
         });
-        return response.ok ? Promise.resolve(json) : Promise.reject(json);
       }
       const response = await fetch(drinksURL);
       const json = await response.json();
       console.log(json);
-      setRecipes({
+      return setRecipes({
         recipeType: json,
       });
-      return response.ok ? Promise.resolve(json) : Promise.reject(json);
     }
     getDetails();
     getRecipes();
