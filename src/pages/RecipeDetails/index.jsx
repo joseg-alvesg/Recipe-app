@@ -146,12 +146,12 @@ export default function RecipeDetails() {
           <>
             <section>
               <img
-                src={ details.detail[0][`str${tag()}Thumb`] }
-                alt={ details.detail[0][`str${tag()}`] }
+                src={ details.detail[0][`str${tag(type)}Thumb`] }
+                alt={ details.detail[0][`str${tag(type)}`] }
                 data-testid="recipe-photo"
               />
               <h2 data-testid="recipe-title">
-                {details.detail[0][`str${tag()}`]}
+                {details.detail[0][`str${tag(type)}`]}
               </h2>
               <button
                 type="button"
