@@ -12,3 +12,12 @@
 .carousel-img {
   width: 200px;
 }
+
+.start-button {
+  bottom: 0;
+  cursor: pointer;
+  height: 40px;
+  position: fixed;
+  width: 200px;
+}
+

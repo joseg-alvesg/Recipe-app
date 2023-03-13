@@ -8,11 +8,14 @@ function Button({
   name = '',
   onClick = null,
   submitBtn = false,
+  id = '',
+  className = '',
   buttons = '',
 }) {
   return (
     <button
       className={ buttons }
+      id={ id }
       data-testid={ dataTestId }
       disabled={ disabled }
       name={ name }
@@ -30,6 +33,8 @@ Button.propTypes = {
   buttons: PropTypes.string,
   disabled: PropTypes.bool,
   name: PropTypes.string,
+  className: PropTypes.string,
+  id: PropTypes.string,
   onClick: PropTypes.func,
   submitBtn: PropTypes.bool,
 };

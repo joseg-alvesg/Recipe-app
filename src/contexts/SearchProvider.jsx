@@ -7,6 +7,11 @@ function SearchProvider({ children }) {
     recipeType: [],
     filtered: '',
   });
+  const [favorited, setFavorited] = useState(false);
+  const [details, setDetails] = useState({
+    detail: [],
+    ingredients: [],
+  });
   const [search, setSearch] = useState({
     radioValue: '',
     searchValue: '',
@@ -21,7 +26,11 @@ function SearchProvider({ children }) {
     setSearch,
     recipes,
     setRecipes,
-  }), [search, recipes]);
+    details,
+    setDetails,
+    favorited,
+    setFavorited,
+  }), [search, recipes, details, favorited]);
 
   return (
     <SearchContext.Provider value={ contextValue }>

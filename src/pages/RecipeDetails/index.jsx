@@ -1,48 +1,102 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import clipboardCopy from 'clipboard-copy';
+import Button from '../../components/Button';
+import Carousel from '../../components/Carousel';
 import SearchContext from '../../contexts/SearchContext';
-import { MAX_INGREDIENTS, MAX_RECOMMENDED_RECIPES } from '../../helpers/constants';
+import { MAX_INGREDIENTS } from '../../helpers/constants';
+import { recipeTypes, tag } from '../../helpers/Functions';
 import { detailsApi } from '../../helpers/recipesApi';
 import './RecipeDetails.css';
+import { getLocalStorage } from '../../helpers/localStorage';
+import { setFavorite } from '../../helpers/favorite';
+
+import whiteHeart from '../../images/whiteHeartIcon.svg';
+import blackHeart from '../../images/blackHeartIcon.svg';
+import shareIcon from '../../images/shareIcon.svg';
+
+const MAX_TIMEOUT_COPY = 3000;
 
 export default function RecipeDetails() {
-  const [details, setDetails] = useState({
-    detail: [],
-    ingredients: [],
-  });
+  const [copied, setCopied] = useState(false);
+
   const {
-    recipes,
+    details,
+    setDetails,
     setRecipes,
+    favorited,
+    setFavorited,
   } = useContext(SearchContext);
 
   const { id } = useParams();
   const history = useHistory();
   const type = history.location.pathname;
-  const tag = () => {
+
+  const startButton = () => {
+    const recipesInProgress = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    if (recipesInProgress !== undefined
+      && recipesInProgress !== null) {
+      if (recipesInProgress[`${recipeTypes(type)}`][id]) {
+        return history.push(`/${recipeTypes(type)}/${id}/in-progress`);
+      }
+      recipesInProgress[`${recipeTypes(type)}`][id] = [];
+      return localStorage
+        .setItem('inProgressRecipes', JSON.stringify(recipesInProgress));
+    }
+    const recipesTest = {
+      meals: {},
+      drinks: {},
+    };
     if (type.includes('meals')) {
-      return 'Meal';
+      recipesTest.meals[id] = [];
+      localStorage.setItem('inProgressRecipes', JSON.stringify(recipesTest));
+      return history.push(`/meals/${id}/in-progress`);
     }
     if (type.includes('drinks')) {
-      return 'Drink';
+      recipesTest.drinks[id] = [];
+      localStorage.setItem('inProgressRecipes', JSON.stringify(recipesTest));
+      return history.push(`/drinks/${id}/in-progress`);
     }
+  };
+
+  const progressRecipes = () => {
+    const recipesList = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    if (recipesList !== undefined
+      && recipesList !== null) {
+      if (tag(type) === 'Meal') {
+        return Object.keys(recipesList.meals).some((recipe) => id === recipe);
+      }
+      if (tag(type) === 'Drink') {
+        return Object.keys(recipesList.drinks).some((recipe) => id === recipe);
+      }
+    } return false;
+  };
+
+  const doneRecipes = () => {
+    const recipesList = JSON.parse(localStorage.getItem('doneRecipes'));
+    if (recipesList !== undefined
+      && recipesList !== null) {
+      return recipesList.some((recipe) => id === recipe.id);
+    } return false;
   };
 
   useEffect(() => {
     async function getDetails() {
       const recipeDetails = await detailsApi(id, type);
-      const test = [];
-      await recipeDetails.map((item) => {
+      const ingredientList = [];
+      await recipeDetails?.map((item) => {
         for (let index = 1; index < MAX_INGREDIENTS; index += 1) {
           if (item[`strIngredient${index}`] !== ''
-           && item[`strIngredient${index}`] !== null) {
-            test.push({
+           && item[`strIngredient${index}`] !== null
+           && item[`strIngredient${index}`] !== undefined) {
+            ingredientList.push({
               ingredient: item[`strIngredient${index}`],
               measure: item[`strMeasure${index}`],
             });
           }
         } return setDetails({
           detail: recipeDetails,
-          ingredients: test,
+          ingredients: ingredientList,
         });
       });
     }
@@ -50,42 +104,84 @@ export default function RecipeDetails() {
       const mealsURL = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
       const drinksURL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
 
-      if (type.includes('meals')) {
+      if (type?.includes('meals')) {
         const response = await fetch(mealsURL);
         const json = await response.json();
-        console.log(json);
-        setRecipes({
+        return setRecipes({
           recipeType: json,
         });
-        return response.ok ? Promise.resolve(json) : Promise.reject(json);
       }
       const response = await fetch(drinksURL);
       const json = await response.json();
-      console.log(json);
-      setRecipes({
+      return setRecipes({
         recipeType: json,
       });
-      return response.ok ? Promise.resolve(json) : Promise.reject(json);
     }
     getDetails();
     getRecipes();
-  }, [id, type, setRecipes]);
+  }, [id, type, setRecipes, setDetails]);
+
+  useEffect(() => {
+    const verifyFavorite = () => {
+      const favoriteRecipes = getLocalStorage('favoriteRecipes') || [];
+      return favoriteRecipes.some((recipe) => id === recipe.id);
+    };
+
+    setFavorited(verifyFavorite());
+  }, [id, setFavorited]);
+
+  function copyLink() {
+    const link = `http://localhost:3000${type}`;
+    clipboardCopy(link);
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, MAX_TIMEOUT_COPY);
+  }
 
   return (
     <div>
       {details.detail?.[0]
         ? (
           <>
-            <img
-              src={ details.detail[0][`str${tag()}Thumb`] }
-              alt={ details.detail[0][`str${tag()}`] }
-              data-testid="recipe-photo"
-            />
-            <h2 data-testid="recipe-title">
-              {details.detail[0][`str${tag()}`]}
-            </h2>
+            <section>
+              <img
+                src={ details.detail[0][`str${tag()}Thumb`] }
+                alt={ details.detail[0][`str${tag()}`] }
+                data-testid="recipe-photo"
+              />
+              <h2 data-testid="recipe-title">
+                {details.detail[0][`str${tag()}`]}
+              </h2>
+              <button
+                type="button"
+                data-testid="share-btn"
+                src="src/images/shareIcon.svg"
+                onClick={ copyLink }
+              >
+                <img src={ shareIcon } alt="" />
+              </button>
+              {copied && <span>Link copied!</span>}
+              <button
+                type="button"
+                onClick={ () => {
+                  setFavorited(setFavorite(
+                    favorited,
+                    details,
+                    history.location.pathname,
+                    id,
+                  ));
+                } }
+              >
+                <img
+                  data-testid="favorite-btn"
+                  src={ favorited ? blackHeart : whiteHeart }
+                  alt=""
+                />
+              </button>
+            </section>
             <p data-testid="recipe-category">
-              {tag() === 'Meal' ? details.detail[0].strCategory
+              {tag(type) === 'Meal' ? details.detail[0].strCategory
                 : details.detail[0].strAlcoholic}
             </p>
             <ul>
@@ -103,62 +199,28 @@ export default function RecipeDetails() {
             <p data-testid="instructions">
               {details.detail[0].strInstructions}
             </p>
-            { tag() === 'Meal'
+            { tag(type) === 'Meal'
               ? (
                 <iframe
                   data-testid="video"
-                  title={ details.detail[0][`str${tag()}`] }
-                  src={ details.detail[0].strYoutube }
+                  title={ details.detail[0][`str${tag(type)}`] }
+                  src={ details.detail[0].strYoutube ? details.detail[0].strYoutube
+                    .replace('watch?v=', 'embed/')
+                    .replace('youtube', 'youtube-nocookie') : null }
                 />
               ) : null}
-            <div className="recommended-box">
-              {tag() === 'Meal' ? recipes.recipeType.drinks?.map((item, index) => {
-                if (index < MAX_RECOMMENDED_RECIPES) {
-                  return (
-                    <div
-                      className="recommended-card"
-                      data-testid={ `${index}-recommendation-card` }
-                      key={ index }
-                    >
-                      <img
-                        className="carousel-img"
-                        src={ item.strDrinkThumb }
-                        alt={ item.strDrink }
-                        data-testid="recipe-photo"
-                      />
-                      <p data-testid={ `${index}-recommendation-title` }>
-                        { item.strDrink }
-                      </p>
-                    </div>
+            <Carousel tag={ tag(type) } />
 
-                  );
-                } return null;
-              }) : recipes.recipeType.meals?.map((item, index) => {
-                if (index < MAX_RECOMMENDED_RECIPES) {
-                  return (
-                    <div
-                      className="recommended-card"
-                      data-testid={ `${index}-recommendation-card` }
-                      key={ index }
-                    >
-                      <img
-                        className="carousel-img"
-                        src={ item.strMealThumb }
-                        alt={ item.strMeal }
-                        data-testid="recipe-photo"
-                      />
-                      <p data-testid={ `${index}-recommendation-title` }>
-                        { item.strMeal }
-                      </p>
-                    </div>
-
-                  );
-                } return null;
-              })}
-            </div>
-
+            { !doneRecipes() ? (
+              <Button
+                className="start-button"
+                dataTestId="start-recipe-btn"
+                onClick={ startButton }
+              >
+                {progressRecipes() ? 'Continue Recipe' : 'Start Recipe' }
+              </Button>)
+              : null}
           </>) : null}
-
     </div>
   );
 }
