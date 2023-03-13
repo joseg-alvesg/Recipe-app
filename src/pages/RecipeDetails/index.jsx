@@ -1,5 +1,6 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import clipboardCopy from 'clipboard-copy';
 import Button from '../../components/Button';
 import Carousel from '../../components/Carousel';
 import SearchContext from '../../contexts/SearchContext';
@@ -7,12 +8,24 @@ import { MAX_INGREDIENTS } from '../../helpers/constants';
 import { recipeTypes, tag } from '../../helpers/Functions';
 import { detailsApi } from '../../helpers/recipesApi';
 import './RecipeDetails.css';
+import { getLocalStorage } from '../../helpers/localStorage';
+import { setFavorite } from '../../helpers/favorite';
+
+import whiteHeart from '../../images/whiteHeartIcon.svg';
+import blackHeart from '../../images/blackHeartIcon.svg';
+import shareIcon from '../../images/shareIcon.svg';
+
+const MAX_TIMEOUT_COPY = 3000;
 
 export default function RecipeDetails() {
+  const [copied, setCopied] = useState(false);
+
   const {
     details,
     setDetails,
     setRecipes,
+    favorited,
+    setFavorited,
   } = useContext(SearchContext);
 
   const { id } = useParams();
@@ -56,8 +69,7 @@ export default function RecipeDetails() {
       if (tag(type) === 'Drink') {
         return Object.keys(recipesList.drinks).some((recipe) => id === recipe);
       }
-    }
-    return false;
+    } return false;
   };
 
   const doneRecipes = () => {
@@ -65,8 +77,7 @@ export default function RecipeDetails() {
     if (recipesList !== undefined
       && recipesList !== null) {
       return recipesList.some((recipe) => id === recipe.id);
-    }
-    return false;
+    } return false;
   };
 
   useEffect(() => {
@@ -110,19 +121,65 @@ export default function RecipeDetails() {
     getRecipes();
   }, [id, type, setRecipes, setDetails]);
 
+  useEffect(() => {
+    const verifyFavorite = () => {
+      const favoriteRecipes = getLocalStorage('favoriteRecipes') || [];
+      return favoriteRecipes.some((recipe) => id === recipe.id);
+    };
+
+    setFavorited(verifyFavorite());
+  }, [id, setFavorited]);
+
+  function copyLink() {
+    const link = `http://localhost:3000${type}`;
+    clipboardCopy(link);
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, MAX_TIMEOUT_COPY);
+  }
+
   return (
     <div>
       {details.detail?.[0]
         ? (
           <>
-            <img
-              src={ details.detail[0][`str${tag(type)}Thumb`] }
-              alt={ details.detail[0][`str${tag(type)}`] }
-              data-testid="recipe-photo"
-            />
-            <h2 data-testid="recipe-title">
-              {details.detail[0][`str${tag(type)}`]}
-            </h2>
+            <section>
+              <img
+                src={ details.detail[0][`str${tag()}Thumb`] }
+                alt={ details.detail[0][`str${tag()}`] }
+                data-testid="recipe-photo"
+              />
+              <h2 data-testid="recipe-title">
+                {details.detail[0][`str${tag()}`]}
+              </h2>
+              <button
+                type="button"
+                data-testid="share-btn"
+                src="src/images/shareIcon.svg"
+                onClick={ copyLink }
+              >
+                <img src={ shareIcon } alt="" />
+              </button>
+              {copied && <span>Link copied!</span>}
+              <button
+                type="button"
+                onClick={ () => {
+                  setFavorited(setFavorite(
+                    favorited,
+                    details,
+                    history.location.pathname,
+                    id,
+                  ));
+                } }
+              >
+                <img
+                  data-testid="favorite-btn"
+                  src={ favorited ? blackHeart : whiteHeart }
+                  alt=""
+                />
+              </button>
+            </section>
             <p data-testid="recipe-category">
               {tag(type) === 'Meal' ? details.detail[0].strCategory
                 : details.detail[0].strAlcoholic}
@@ -164,7 +221,6 @@ export default function RecipeDetails() {
               </Button>)
               : null}
           </>) : null}
-
     </div>
   );
 }
