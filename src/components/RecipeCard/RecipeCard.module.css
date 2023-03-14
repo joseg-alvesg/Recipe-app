@@ -9,7 +9,6 @@
   }
 
   .recipes img {
-    background-color: yellow;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     width: 100%;
@@ -25,7 +24,7 @@
   }
 
   .link {
-    background-color: red;
+    background-color: rgb(255, 139, 0);
     border: solid 2px rgb(184, 182, 182);
     border-radius: 10px;
     font-size: 1.5rem;

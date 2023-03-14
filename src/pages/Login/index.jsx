@@ -4,6 +4,7 @@ import validator from 'validator';
 import { MIN_PASSWORD_LENGTH } from '../../helpers/constants';
 import { setLocalStorage } from '../../helpers/localStorage';
 import style from './Login.module.css';
+import chef from '../../images/chef.png';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -21,6 +22,7 @@ export default function Login() {
   return (
     <div className={ style.container }>
       <section className={ style.section }>
+        <img className={ style.logo } src={ chef } alt="logo" />
         <input
           placeholder="E-mail"
           type="email"

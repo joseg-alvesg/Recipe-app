@@ -53,7 +53,7 @@ export default function Carousel({ tag }) {
                   alt={ item.strMeal }
                   data-testid="recipe-photo"
                 />
-                <p data-testid={ `${index}-recommendation-title` }>
+                <p className="linkH3" data-testid={ `${index}-recommendation-title` }>
                   { item.strMeal }
                 </p>
               </div>

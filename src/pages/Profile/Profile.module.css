@@ -2,7 +2,6 @@
 
   .profile {
     align-items: center;
-    background-color: black;
     display: flex;
     flex-direction: column;
     gap: 30px;
@@ -11,7 +10,8 @@
   }
 
   .doneRecipes {
-    background-color: red;
+    background-color: rgb(255, 139, 0);
+    border: none;
     color: white;
     font-size: 20px;
     padding: 10px;
@@ -19,7 +19,8 @@
   }
 
   .favoriteRecipes {
-    background-color: red;
+    background-color: rgb(255, 139, 0);
+    border: none;
     color: white;
     font-size: 20px;
     padding: 10px;
@@ -27,7 +28,8 @@
   }
 
   .logoutButton {
-    background-color: red;
+    background-color: rgb(255, 139, 0);
+    border: none;
     color: white;
     font-size: 20px;
     padding: 10px;
@@ -35,7 +37,7 @@
   }
 
   .email {
-    color: red;
+    color: rgb(255, 139, 0);
     font-size: 30px;
     margin-bottom: 2rem;
     margin-top: 5rem;

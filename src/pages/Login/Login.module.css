@@ -1,13 +1,13 @@
 @media only screen and ( min-width : 360px ) and ( max-device-width : 640px ) {
 
   .container {
-    background-color: rgb(8, 8, 8);
+    background-color: rgb(255, 139, 0);
     display: flex;
     height: 100vh;
   }
 
   .container input {
-    border: 2px;
+    border: solid 1px rgb(204, 77, 3);
     display: flex;
     padding: 1rem;
     width: 70%;
@@ -25,7 +25,7 @@
 
   .button {
     align-items: center;
-    background-color: #ec0909;
+    background-color: rgb(94, 63, 26);
     border: none;
     color: white;
     cursor: pointer;
@@ -39,12 +39,16 @@
 
   .button:disabled {
     align-items: center;
-    background-color: rgb(141, 140, 140);
+    background-color: rgb(141, 141, 140);
     color: rgb(87, 86, 86);
     cursor: not-allowed;
     display: flex;
     justify-content: center;
     width: 70%;
+  }
+
+  .logo {
+    width: 300px;
   }
 
 

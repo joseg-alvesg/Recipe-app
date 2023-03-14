@@ -1,23 +1,84 @@
-.recommended-box {
-  display: flex;
-  overflow: auto;
-  white-space: nowrap;
-}
+@media only screen and ( min-width : 360px ) and ( max-device-width : 640px ) {
 
-.recommended-card {
-  margin-left: 15px;
-  text-align: center;
-}
+  .recommended-box {
+    display: flex;
+    overflow-x: scroll;
+    white-space: nowrap;
+  }
 
-.carousel-img {
-  width: 200px;
-}
+  .recommended-card {
+    background-color: rgb(255, 139, 0);
+    color: white;
+    margin-bottom: 50px;
+    margin-left: 15px;
+    margin-top: 20px;
+    text-align: center;
+  }
 
-.start-button {
-  bottom: 0;
-  cursor: pointer;
-  height: 40px;
-  position: fixed;
-  width: 200px;
-}
+  .carousel-img {
+    margin-top: 10px;
+    width: 200px;
+  }
 
+  .video {
+    display: flex;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    text-decoration: none;
+
+  }
+
+  .start-button {
+    background-color: rgb(255, 139, 0);
+    border: none;
+    border-radius: 5px;
+    bottom: 0;
+    color: white;
+    font-size: large;
+    height: 40px;
+    margin-left: 5%;
+    margin-right: 5%;
+    position: fixed;
+    width: 80%;
+  }
+
+  .img-details {
+    width: 430px;
+
+  }
+
+  .names {
+    display: flex;
+    flex-direction: column;
+    font-size: 17px;
+    padding: 10px;
+  }
+
+  .recipes {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 10px;
+  }
+
+  .ingredients {
+    border-radius: 5px;
+    margin: auto;
+    padding: 10px;
+    width: 90%;
+  }
+
+  .instru {
+    border-radius: 5px;
+    box-shadow: rgb(0 0 0 / 16%) 1px 10px 36px 1px , rgb(0 0 0 / 6%) 1px 1px 1px 1px;
+    margin: auto;
+    padding: 10px;
+    width: 90%;
+  }
+
+  .h3 {
+    margin-bottom: 5px;
+    margin-left: 10px;
+  }
+
+}

@@ -1,0 +1,50 @@
+@media only screen and ( min-width : 360px ) and ( max-device-width : 640px ) {
+
+  .favoritesRecipe {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .imgs {
+    border-radius: 25px;
+    height: 170px;
+    width: 170px;
+  }
+
+  .favoritesRecipe2 {
+    background-color: rgb(255, 139, 0);
+    border-radius: 25px;
+    color: white;
+    display: flex;
+    gap: 5px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5px;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 90%;
+
+  }
+
+  .favoritesRecipe3 {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    justify-content: start;
+    margin-left: 10px;
+    margin-top: 10px;
+  }
+
+  .share {
+    width: 30px;
+  }
+
+  .h1 {
+    max-width: 10ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

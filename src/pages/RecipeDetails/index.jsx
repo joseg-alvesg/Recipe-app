@@ -146,45 +146,50 @@ export default function RecipeDetails() {
           <>
             <section>
               <img
+                className="img-details"
                 src={ details.detail[0][`str${tag(type)}Thumb`] }
                 alt={ details.detail[0][`str${tag(type)}`] }
                 data-testid="recipe-photo"
               />
-              <h2 data-testid="recipe-title">
-                {details.detail[0][`str${tag(type)}`]}
-              </h2>
-              <button
-                type="button"
-                data-testid="share-btn"
-                src="src/images/shareIcon.svg"
-                onClick={ copyLink }
-              >
-                <img src={ shareIcon } alt="" />
-              </button>
-              {copied && <span>Link copied!</span>}
-              <button
-                type="button"
-                onClick={ () => {
-                  setFavorited(setFavorite(
-                    favorited,
-                    details,
-                    history.location.pathname,
-                    id,
-                  ));
-                } }
-              >
-                <img
-                  data-testid="favorite-btn"
-                  src={ favorited ? blackHeart : whiteHeart }
-                  alt=""
-                />
-              </button>
+              <div className="recipes">
+                <div className="names">
+                  <h2 data-testid="recipe-title">
+                    {details.detail[0][`str${tag(type)}`]}
+                  </h2>
+                  <p data-testid="recipe-category">
+                    {tag(type) === 'Meal' ? details.detail[0].strCategory
+                      : details.detail[0].strAlcoholic}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  data-testid="share-btn"
+                  src="src/images/shareIcon.svg"
+                  onClick={ copyLink }
+                >
+                  <img src={ shareIcon } alt="" />
+                </button>
+                {copied && <span>Link copied!</span>}
+                <button
+                  type="button"
+                  onClick={ () => {
+                    setFavorited(setFavorite(
+                      favorited,
+                      details,
+                      history.location.pathname,
+                      id,
+                    ));
+                  } }
+                >
+                  <img
+                    data-testid="favorite-btn"
+                    src={ favorited ? blackHeart : whiteHeart }
+                    alt=""
+                  />
+                </button>
+              </div>
             </section>
-            <p data-testid="recipe-category">
-              {tag(type) === 'Meal' ? details.detail[0].strCategory
-                : details.detail[0].strAlcoholic}
-            </p>
-            <ul>
+            <ul className="ingredients">
               <h3>Ingredients</h3>
               {details.ingredients.map((item, index) => (
                 <li
@@ -195,13 +200,14 @@ export default function RecipeDetails() {
                 </li>
               ))}
             </ul>
-            <h3>Instructions</h3>
-            <p data-testid="instructions">
+            <h3 className="h3">Instructions</h3>
+            <p className="instru" data-testid="instructions">
               {details.detail[0].strInstructions}
             </p>
             { tag(type) === 'Meal'
               ? (
                 <iframe
+                  className="video"
                   data-testid="video"
                   title={ details.detail[0][`str${tag(type)}`] }
                   src={ details.detail[0].strYoutube ? details.detail[0].strYoutube
@@ -213,7 +219,7 @@ export default function RecipeDetails() {
 
             { !doneRecipes() ? (
               <Button
-                className="start-button"
+                buttons="start-button"
                 dataTestId="start-recipe-btn"
                 onClick={ startButton }
               >

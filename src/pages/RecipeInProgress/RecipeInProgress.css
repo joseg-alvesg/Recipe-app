@@ -1,18 +1,44 @@
-.task-list {
-  list-style: none;
-}
+@media only screen and ( min-width : 360px ) and ( max-device-width : 640px ) {
 
-.ingredient-item {
-  display: flex;
-}
+  .task-list {
+    list-style: none;
+  }
 
-.finish-button {
-  cursor: pointer;
-  height: 40px;
-  width: 200px;
-}
+  .ingredient-item {
+    display: flex;
+  }
 
-.done {
-  display: flex;
-  text-decoration: line-through solid black;
+  .finish-button {
+    background-color: rgb(255, 139, 0);
+    border: none;
+    border-radius: 5px;
+    bottom: 0;
+    color: white;
+    font-size: large;
+    height: 40px;
+    margin-left: 3.5%;
+    margin-right: 5%;
+    position: fixed;
+    width: 76%;
+  }
+
+  .finish-button:disabled {
+    background-color: rgb(141, 140, 140);
+    border: none;
+    border-radius: 5px;
+    bottom: 0;
+    color: white;
+    font-size: large;
+    height: 40px;
+    margin-left: 5%;
+    margin-right: 5%;
+    position: fixed;
+    width: 80%;
+  }
+
+  .done {
+    display: flex;
+    text-decoration: line-through solid black;
+  }
+
 }

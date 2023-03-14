@@ -1,7 +1,7 @@
 @media only screen and ( min-width : 360px ) and ( max-device-width : 640px ) {
 
   .footer {
-    background-color: red;
+    background-color: rgb(255, 139, 0);
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     bottom: 0;
@@ -13,7 +13,7 @@
   }
 
   .buttonsFooter {
-    background-color: rgb(230, 7, 7);
+    background-color: rgb(255, 139, 0);
     border: none;
   }
 }

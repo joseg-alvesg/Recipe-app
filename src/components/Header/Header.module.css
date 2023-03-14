@@ -1,10 +1,11 @@
 @media only screen and ( min-width : 360px ) and ( max-device-width : 640px ) {
 
   .header {
-    background-color: rgb(230, 7, 7);
+    background-color: rgb(255, 139, 0);
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     box-shadow: 50px;
+    color: white;
     display: flex;
     flex-flow: wrap;
     justify-content: space-between;
@@ -13,7 +14,7 @@
   }
 
   .buttonsHeader {
-    background-color: rgb(230, 7, 7);
+    background-color: rgb(255, 139, 0);
     border: none;
   }
 }

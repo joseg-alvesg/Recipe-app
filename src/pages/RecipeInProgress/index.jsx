@@ -137,10 +137,10 @@ export default function RecipeInProgress() {
   }, [id, type, setRecipes, setDetails]);
 
   return (
-    <div>
+    <div className="test">
       {details.detail?.[0]
         ? (
-          <div>
+          <div className="tesa">
             <ProgressCard
               ingredients={ ingredients }
               doneTasks={ doneTasks }
