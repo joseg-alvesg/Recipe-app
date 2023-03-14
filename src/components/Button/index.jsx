@@ -9,7 +9,6 @@ function Button({
   onClick = null,
   submitBtn = false,
   id = '',
-  className = '',
   buttons = '',
 }) {
   return (
@@ -33,7 +32,6 @@ Button.propTypes = {
   buttons: PropTypes.string,
   disabled: PropTypes.bool,
   name: PropTypes.string,
-  className: PropTypes.string,
   id: PropTypes.string,
   onClick: PropTypes.func,
   submitBtn: PropTypes.bool,
